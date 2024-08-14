@@ -20,7 +20,7 @@ namespace ApiPeliculas.Controllers.V1
       [ResponseCache(CacheProfileName = "CachePorDefecto")]
      */
     //Dar protección al controlador completo
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "Admin")]
     [Route("api/v{version:apiVersion}/categorias")]
     [ApiController]
     /*Con EnableCors("PoliticaCors") lo usuamos para aplicarle la politica de los CORS a un controlador de la API.

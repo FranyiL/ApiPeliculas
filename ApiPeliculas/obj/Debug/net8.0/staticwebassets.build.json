@@ -1,11 +1,39 @@
 {
   "Version": 1,
-  "Hash": "IPCejViWBO/fPRWS+8X6vuqUyByD/v5HFOEgDk5YKDg=",
+  "Hash": "YtidAAcEqnUnMXtag+knEsZk75VffdexQKxRaoPNejg=",
   "Source": "ApiPeliculas",
   "BasePath": "_content/ApiPeliculas",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "ApiPeliculas\\wwwroot",
+      "Source": "ApiPeliculas",
+      "ContentRoot": "C:\\Users\\frany\\source\\repos\\API_Curso\\ApiPeliculas\\ApiPeliculas\\ApiPeliculas\\wwwroot\\",
+      "BasePath": "_content/ApiPeliculas",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\frany\\source\\repos\\API_Curso\\ApiPeliculas\\ApiPeliculas\\ApiPeliculas\\wwwroot\\ImagenesPeliculas\\0fb3bebfa-88a8-40f4-adae-ca59af93943e.jpg",
+      "SourceId": "ApiPeliculas",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\frany\\source\\repos\\API_Curso\\ApiPeliculas\\ApiPeliculas\\ApiPeliculas\\wwwroot\\",
+      "BasePath": "_content/ApiPeliculas",
+      "RelativePath": "ImagenesPeliculas/0fb3bebfa-88a8-40f4-adae-ca59af93943e.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\ImagenesPeliculas\\0fb3bebfa-88a8-40f4-adae-ca59af93943e.jpg"
+    }
+  ]
 }

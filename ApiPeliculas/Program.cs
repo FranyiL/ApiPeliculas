@@ -9,6 +9,9 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Identity;
+using ApiPeliculas.Migrations;
+using ApiPeliculas.Modelos;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +19,9 @@ var builder = WebApplication.CreateBuilder(args);
 //Agregando el contexto a las dependencias y declarando que tipo de BD utilizará
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
                                                    options.UseSqlServer(builder.Configuration.GetConnectionString("ConexionSql")));
+
+//Soporte para autenticación con .NET Identity
+builder.Services.AddIdentity<AppUsuario, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
 //Soporte para cache
 builder.Services.AddResponseCaching();
@@ -199,6 +205,8 @@ if (app.Environment.IsDevelopment())
         options.SwaggerEndpoint("/swagger/v2/swagger.json","ApiPeliculasV2");
     });
 }
+//Soporte para archivos estáticos como imágenes
+app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 

@@ -10,7 +10,7 @@ using System.Net;
 
 namespace ApiPeliculas.Controllers
 {
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "Admin")]
     [Route("api/v{version:apiVersion}/usuarios")]
     [ApiController]
     /*
@@ -50,13 +50,13 @@ namespace ApiPeliculas.Controllers
 
         //Es una buena práctica declarar de manera explicita el parámetro que recibe el método
         //y como se va llamar dicho parámetro
-        [HttpGet("{usuarioId:int}", Name = "GetUsuario")]
+        [HttpGet("{usuarioId}", Name = "GetUsuario")]
         [ResponseCache(CacheProfileName = "CachePorDefecto")]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult GetUsuario(int usuarioId)
+        public IActionResult GetUsuario(string usuarioId)
         {
             var itemUsuario = _usRepo.GetUsuario(usuarioId);
 
