@@ -74,9 +74,28 @@ namespace ApiPeliculas.Repositorio
             return _bd.Pelicula.FirstOrDefault(p => p.Id == peliculaId);
         }
 
-        public ICollection<Pelicula> GetPeliculas()
+        //V1
+        //public ICollection<Pelicula> GetPeliculas()
+        //{
+        //    return _bd.Pelicula.OrderBy(p => p.Nombre).ToList();
+        //}
+
+        //V2 paginación
+        public ICollection<Pelicula> GetPeliculas(int pageNumber, int pageSize)
         {
-            return _bd.Pelicula.OrderBy(p => p.Nombre).ToList();
+            return _bd.Pelicula.OrderBy(p => p.Nombre) //Ordenar las películas alfabeticamente por el campo de nombre
+                .Skip((pageNumber - 1) * pageSize) //El método de Skip omite un número de elementos en función del cálculo (pageNumber -1 * pageSize) Este cálculo determina cuántos elementos deben ser saltados para llegar a la página solicitada. 
+                /*Si el take pagesize el método take toma el número especificado de elementos, 
+                 * en este caso Page. Esto asegura que solo se recuperen los elementos 
+                 * correspondientes a la página actual*/
+                .Take(pageSize) 
+                .ToList(); //Que sea de tipo lista
+        }
+
+        //Contador para las películas
+        public int GetTotalPeliculas()
+        {
+            return _bd.Pelicula.Count();
         }
 
         public ICollection<Pelicula> GetPeliculasEnCategoria(int catId)

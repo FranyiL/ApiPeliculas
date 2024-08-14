@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace ApiPeliculas.Controllers.V1
 {
@@ -23,23 +24,60 @@ namespace ApiPeliculas.Controllers.V1
             _pelRepo = pelRepo;
             _mapper = mapper;
         }
+        //V1
+        //[AllowAnonymous]
+        //[HttpGet]
+        //[ResponseCache(CacheProfileName = "CachePorDefecto")]
+        //[ProducesResponseType(StatusCodes.Status403Forbidden)]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //public IActionResult GetPeliculas()
+        //{
+        //    var listaPeliculas = _pelRepo.GetPeliculas();
+        //    var listaPeliculasDto = new List<PeliculaDto>();
 
+        //    foreach (var lista in listaPeliculas)
+        //    {
+        //        listaPeliculasDto.Add(_mapper.Map<PeliculaDto>(lista));
+        //    }
+
+        //    return Ok(listaPeliculasDto);
+        //}
+
+        //V2 con paginación
         [AllowAnonymous]
         [HttpGet]
         [ResponseCache(CacheProfileName = "CachePorDefecto")]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult GetPeliculas()
+        public IActionResult GetPeliculas([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-            var listaPeliculas = _pelRepo.GetPeliculas();
-            var listaPeliculasDto = new List<PeliculaDto>();
-
-            foreach (var lista in listaPeliculas)
+            try
             {
-                listaPeliculasDto.Add(_mapper.Map<PeliculaDto>(lista));
-            }
+                var totalPeliculas = _pelRepo.GetTotalPeliculas();
+                var peliculas = _pelRepo.GetPeliculas(pageNumber,pageSize);
 
-            return Ok(listaPeliculasDto);
+                if (peliculas == null || !peliculas.Any())
+                {
+                    return NotFound("No se encontraron películas.");
+                }
+
+                var peliculasDto = peliculas.Select(p => _mapper.Map<PeliculaDto>(p)).ToList();
+
+                var response = new
+                {
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                    TotalPaginas = (int)Math.Ceiling(totalPeliculas / (double)pageSize),
+                    TotalItems = totalPeliculas,
+                    Items = peliculasDto
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex) 
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error recuperando datos de la aplicación.");
+            }
         }
 
         [AllowAnonymous]
@@ -104,9 +142,9 @@ namespace ApiPeliculas.Controllers.V1
 
                 FileInfo file = new FileInfo(ubicacionDirectorio);
 
-                if (file.Exists)
+                if (System.IO.File.Exists(ubicacionDirectorio))
                 {
-                    file.Delete();
+                    System.IO.File.Delete(ubicacionDirectorio);
                 }
 
                 using (var fileStream = new FileStream(ubicacionDirectorio, FileMode.Create))
@@ -162,14 +200,16 @@ namespace ApiPeliculas.Controllers.V1
                 string nombreArchivo = pelicula.Id + System.Guid.NewGuid().ToString() + Path.GetExtension(actualizarPeliculaDto.Imagen.FileName);
                 string rutaArchivo = @"wwwroot\\ImagenesPeliculas\" + nombreArchivo;
 
-                //Para obtener directorio en donde se guardaran las imégenes
+                //Para obtener directorio en donde se guardaran las imágenes
                 var ubicacionDirectorio = Path.Combine(Directory.GetCurrentDirectory(), rutaArchivo);
 
                 FileInfo file = new FileInfo(ubicacionDirectorio);
 
-                if (file.Exists)
+                //Recordar buscar la manera de cuando actualicen la película se elimine la imágen anterior
+                //que hace referencia al id de la película según su primer número que tiene en el nombre de la misma
+                if (System.IO.File.Exists(ubicacionDirectorio))
                 {
-                    file.Delete();
+                    System.IO.File.Delete(ubicacionDirectorio);
                 }
 
                 using (var fileStream = new FileStream(ubicacionDirectorio, FileMode.Create))
@@ -224,20 +264,24 @@ namespace ApiPeliculas.Controllers.V1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetPeliculasEnCategoria(int categoriaId)
         {
-            var listaPeliculas = _pelRepo.GetPeliculasEnCategoria(categoriaId);
-
-            if (listaPeliculas == null)
+            try
             {
-                return NotFound();
+                var listaPeliculas = _pelRepo.GetPeliculasEnCategoria(categoriaId);
+
+                if (listaPeliculas == null || !listaPeliculas.Any())
+                {
+                    return NotFound($"No se encontraron películas en la categoría con ID {categoriaId}.");
+                }
+
+                //Mejor protección para la propiedad del modelo de películas
+                var itemPelicula = listaPeliculas.Select(pelicula => _mapper.Map<PeliculaDto>(pelicula)).ToList();
+
+                return Ok(itemPelicula);
             }
-
-            var itemPelicula = new List<PeliculaDto>();
-
-            foreach (var pelicula in listaPeliculas)
+            catch (Exception ex) 
             {
-                itemPelicula.Add(_mapper.Map<PeliculaDto>(pelicula));
+                return StatusCode(StatusCodes.Status500InternalServerError,"Error recuperando datos de la aplicación");
             }
-            return Ok(itemPelicula);
         }
 
         [AllowAnonymous]
@@ -249,14 +293,17 @@ namespace ApiPeliculas.Controllers.V1
         {
             try
             {
-                var resultado = _pelRepo.BuscarPelicula(nombre);
+                var peliculas = _pelRepo.BuscarPelicula(nombre);
                 //El método Any nos permite hacer una comparación de lo que el usuario nos envía con lo que esta en la BD coincida
                 //Este método es de Entity Framework Core.
-                if (resultado.Any())
+                if (!peliculas.Any())
                 {
-                    return Ok(resultado);
+                    return NotFound($"No se encontron películas que coincidan con los criterios de búsqueda: {nombre}.");
                 }
-                return NotFound();
+                
+                var peliculasDto = _mapper.Map<IEnumerable<PeliculaDto>>(peliculas);
+
+                return Ok(peliculasDto);
             }
             catch (Exception)
             {

@@ -1,8 +1,12 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\frany\\source\\repos\\API_Curso\\ApiPeliculas\\ApiPeliculas\\ApiPeliculas\\wwwroot\\ImagenesPeliculas\\0fb3bebfa-88a8-40f4-adae-ca59af93943e.jpg",
-      "PackagePath": "staticwebassets\\ImagenesPeliculas\\0fb3bebfa-88a8-40f4-adae-ca59af93943e.jpg"
+      "Id": "C:\\Users\\frany\\source\\repos\\API_Curso\\ApiPeliculas\\ApiPeliculas\\ApiPeliculas\\wwwroot\\ImagenesPeliculas\\8825cfd61-ae83-4f9d-bb44-fa1ea6fd0385.jpg",
+      "PackagePath": "staticwebassets\\ImagenesPeliculas\\8825cfd61-ae83-4f9d-bb44-fa1ea6fd0385.jpg"
+    },
+    {
+      "Id": "C:\\Users\\frany\\source\\repos\\API_Curso\\ApiPeliculas\\ApiPeliculas\\ApiPeliculas\\wwwroot\\ImagenesPeliculas\\8e7764739-f52d-4ecb-9093-3792e916287e.jpg",
+      "PackagePath": "staticwebassets\\ImagenesPeliculas\\8e7764739-f52d-4ecb-9093-3792e916287e.jpg"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.ApiPeliculas.Microsoft.AspNetCore.StaticWebAssets.props",
