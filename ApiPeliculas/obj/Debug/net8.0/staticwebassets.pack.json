@@ -1,11 +1,19 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\frany\\source\\repos\\API_Curso\\ApiPeliculas\\ApiPeliculas\\ApiPeliculas\\wwwroot\\ImagenesPeliculas\\8825cfd61-ae83-4f9d-bb44-fa1ea6fd0385.jpg",
+      "Id": "D:\\C#\\ASP.NET\\API\\ApiPeliculas\\wwwroot\\ImagenesPeliculas\\00e227067-642a-42e3-afcf-6c17b6594d32.jpg",
+      "PackagePath": "staticwebassets\\ImagenesPeliculas\\00e227067-642a-42e3-afcf-6c17b6594d32.jpg"
+    },
+    {
+      "Id": "D:\\C#\\ASP.NET\\API\\ApiPeliculas\\wwwroot\\ImagenesPeliculas\\0dd520741-62d8-4db7-84f9-75ada115f9df.jpg",
+      "PackagePath": "staticwebassets\\ImagenesPeliculas\\0dd520741-62d8-4db7-84f9-75ada115f9df.jpg"
+    },
+    {
+      "Id": "D:\\C#\\ASP.NET\\API\\ApiPeliculas\\wwwroot\\ImagenesPeliculas\\8825cfd61-ae83-4f9d-bb44-fa1ea6fd0385.jpg",
       "PackagePath": "staticwebassets\\ImagenesPeliculas\\8825cfd61-ae83-4f9d-bb44-fa1ea6fd0385.jpg"
     },
     {
-      "Id": "C:\\Users\\frany\\source\\repos\\API_Curso\\ApiPeliculas\\ApiPeliculas\\ApiPeliculas\\wwwroot\\ImagenesPeliculas\\8e7764739-f52d-4ecb-9093-3792e916287e.jpg",
+      "Id": "D:\\C#\\ASP.NET\\API\\ApiPeliculas\\wwwroot\\ImagenesPeliculas\\8e7764739-f52d-4ecb-9093-3792e916287e.jpg",
       "PackagePath": "staticwebassets\\ImagenesPeliculas\\8e7764739-f52d-4ecb-9093-3792e916287e.jpg"
     },
     {

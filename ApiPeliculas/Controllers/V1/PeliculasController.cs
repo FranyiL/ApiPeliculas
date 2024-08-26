@@ -110,6 +110,7 @@ namespace ApiPeliculas.Controllers.V1
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         //El atributo [FromForm] nos da una manera para subir la información.
         //La cual es compatible con la subida de imágenes
+
         public IActionResult CrearPelicula([FromForm] CrearPeliculaDto crearPeliculaDto)
         {
             if (!ModelState.IsValid)
@@ -122,7 +123,7 @@ namespace ApiPeliculas.Controllers.V1
                 return BadRequest(ModelState);
             }
 
-            //Si el nombre de la película existe.
+            // Si el nombre de la película existe.
             if (_pelRepo.ExistePelicula(crearPeliculaDto.Nombre))
             {
                 ModelState.AddModelError("", "La película ya existe");
@@ -131,42 +132,111 @@ namespace ApiPeliculas.Controllers.V1
 
             var pelicula = _mapper.Map<Pelicula>(crearPeliculaDto);
 
-            //Subida del archivo
-            if (crearPeliculaDto.Imagen != null)
+            // Inicializa una lista para las rutas de las imágenes
+            pelicula.RutasImagenes = new List<string>();
+            pelicula.RutasLocalesImagenes = new List<string>();
+
+            // Subida de los archivos
+            if (crearPeliculaDto.Imagenes != null && crearPeliculaDto.Imagenes.Count > 0)
             {
-                string nombreArchivo = pelicula.Id + System.Guid.NewGuid().ToString() + Path.GetExtension(crearPeliculaDto.Imagen.FileName);
-                string rutaArchivo = @"wwwroot\\ImagenesPeliculas\" + nombreArchivo;
-
-                //Para obtener directorio en donde se guardaran las imégenes
-                var ubicacionDirectorio = Path.Combine(Directory.GetCurrentDirectory(),rutaArchivo);
-
-                FileInfo file = new FileInfo(ubicacionDirectorio);
-
-                if (System.IO.File.Exists(ubicacionDirectorio))
+                foreach (var imagen in crearPeliculaDto.Imagenes)
                 {
-                    System.IO.File.Delete(ubicacionDirectorio);
+                    string nombreArchivo = pelicula.Id + System.Guid.NewGuid().ToString() + Path.GetExtension(imagen.FileName);
+                    string rutaArchivo = @"wwwroot\\ImagenesPeliculas\" + nombreArchivo;
+
+                    // Para obtener el directorio en donde se guardarán las imágenes
+                    var ubicacionDirectorio = Path.Combine(Directory.GetCurrentDirectory(), rutaArchivo);
+
+                    FileInfo file = new FileInfo(ubicacionDirectorio);
+
+                    if (System.IO.File.Exists(ubicacionDirectorio))
+                    {
+                        System.IO.File.Delete(ubicacionDirectorio);
+                    }
+
+                    using (var fileStream = new FileStream(ubicacionDirectorio, FileMode.Create))
+                    {
+                        imagen.CopyTo(fileStream);
+                    }
+
+                    // Construir la URL base del sitio web actual en una aplicación ASP.NET Core.
+                    var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}{HttpContext.Request.PathBase.Value}";
+
+                    // Agregar la ruta de la imagen a las listas
+                    pelicula.RutasImagenes.Add(baseUrl + "/ImagenesPeliculas/" + nombreArchivo);
+                    pelicula.RutasLocalesImagenes.Add(rutaArchivo);
                 }
-
-                using (var fileStream = new FileStream(ubicacionDirectorio, FileMode.Create))
-                {
-                    crearPeliculaDto.Imagen.CopyTo(fileStream);
-                }
-
-                //construir la URL base del sitio web actual en una aplicación ASP.NET Core.
-                var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}{HttpContext.Request.PathBase.Value}";
-
-                pelicula.RutaImagen = baseUrl + "/ImagenesPeliculas/" + nombreArchivo;
-                pelicula.RutaLocalImagen = rutaArchivo;
             }
             else
             {
-                pelicula.RutaImagen = "https://placeholder.co/600x400";
+                pelicula.RutasImagenes.Add("https://placeholder.co/600x400");
             }
 
             _pelRepo.CrearPelicula(pelicula);
-            //Esta línea de código nos sirve para a la hora de la creación del registro poder visualizar sus datos como retorno
+
+            // Esta línea de código nos sirve para, a la hora de la creación del registro, poder visualizar sus datos como retorno.
             return CreatedAtRoute("GetPelicula", new { peliculaId = pelicula.Id }, pelicula);
         }
+
+
+        //Solo soporta una imagen
+        //public IActionResult CrearPelicula([FromForm] CrearPeliculaDto crearPeliculaDto)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    if (crearPeliculaDto == null)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    //Si el nombre de la película existe.
+        //    if (_pelRepo.ExistePelicula(crearPeliculaDto.Nombre))
+        //    {
+        //        ModelState.AddModelError("", "La película ya existe");
+        //        return StatusCode(404, ModelState);
+        //    }
+
+        //    var pelicula = _mapper.Map<Pelicula>(crearPeliculaDto);
+
+        //    //Subida del archivo
+        //    if (crearPeliculaDto.Imagen != null)
+        //    {
+        //        string nombreArchivo = pelicula.Id + System.Guid.NewGuid().ToString() + Path.GetExtension(crearPeliculaDto.Imagen.FileName);
+        //        string rutaArchivo = @"wwwroot\\ImagenesPeliculas\" + nombreArchivo;
+
+        //        //Para obtener directorio en donde se guardaran las imégenes
+        //        var ubicacionDirectorio = Path.Combine(Directory.GetCurrentDirectory(),rutaArchivo);
+
+        //        FileInfo file = new FileInfo(ubicacionDirectorio);
+
+        //        if (System.IO.File.Exists(ubicacionDirectorio))
+        //        {
+        //            System.IO.File.Delete(ubicacionDirectorio);
+        //        }
+
+        //        using (var fileStream = new FileStream(ubicacionDirectorio, FileMode.Create))
+        //        {
+        //            crearPeliculaDto.Imagen.CopyTo(fileStream);
+        //        }
+
+        //        //construir la URL base del sitio web actual en una aplicación ASP.NET Core.
+        //        var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}{HttpContext.Request.PathBase.Value}";
+
+        //        pelicula.RutaImagen = baseUrl + "/ImagenesPeliculas/" + nombreArchivo;
+        //        pelicula.RutaLocalImagen = rutaArchivo;
+        //    }
+        //    else
+        //    {
+        //        pelicula.RutaImagen = "https://placeholder.co/600x400";
+        //    }
+
+        //    _pelRepo.CrearPelicula(pelicula);
+        //    //Esta línea de código nos sirve para a la hora de la creación del registro poder visualizar sus datos como retorno
+        //    return CreatedAtRoute("GetPelicula", new { peliculaId = pelicula.Id }, pelicula);
+        //}
 
         [HttpPatch("{peliculaId:int}", Name = "ActualizarPatchPelicula")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
