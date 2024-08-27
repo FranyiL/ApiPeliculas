@@ -9,7 +9,6 @@ namespace ApiPeliculas.Modelos.Dtos
         public int Duracion { get; set; }
         public List<string>? RutasImagenes { get; set; }
         public List<string>? RutasLocalesImagenes { get; set; }
-        
         public List<IFormFile> Imagenes { get; set; }
 
         //public IFormFile Imagen { get; set; }

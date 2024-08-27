@@ -137,7 +137,7 @@ namespace ApiPeliculas.Controllers.V1
             pelicula.RutasLocalesImagenes = new List<string>();
 
             // Subida de los archivos
-            if (crearPeliculaDto.Imagenes != null && crearPeliculaDto.Imagenes.Count > 0)
+            if (crearPeliculaDto.Imagenes != null && crearPeliculaDto.Imagenes.Count > 0 && crearPeliculaDto.Imagenes.Count <= 3)
             {
                 foreach (var imagen in crearPeliculaDto.Imagenes)
                 {
@@ -169,7 +169,8 @@ namespace ApiPeliculas.Controllers.V1
             }
             else
             {
-                pelicula.RutasImagenes.Add("https://placeholder.co/600x400");
+                return NotFound($"Has sobrepasado el límite de imágenes");
+                //pelicula.RutasImagenes.Add("https://placeholder.co/600x400");
             }
 
             _pelRepo.CrearPelicula(pelicula);
@@ -259,49 +260,70 @@ namespace ApiPeliculas.Controllers.V1
 
             if (peliculaExistente == null)
             {
-                return NotFound($"No se encontro la película con ID {peliculaId}");
+                return NotFound($"No se encontró la película con ID {peliculaId}");
             }
 
-            var pelicula = _mapper.Map<Pelicula>(actualizarPeliculaDto);
+            // Inicializa las listas de rutas de imágenes en caso de que no estén inicializadas
+            peliculaExistente.RutasImagenes ??= new List<string>();
+            peliculaExistente.RutasLocalesImagenes ??= new List<string>();
 
-            //Subida del archivo
-            if (actualizarPeliculaDto.Imagen != null)
+            // Subida de los nuevos archivos
+            if (actualizarPeliculaDto.Imagenes != null && actualizarPeliculaDto.Imagenes.Count > 0 && actualizarPeliculaDto.Imagenes.Count <= 3)
             {
-                string nombreArchivo = pelicula.Id + System.Guid.NewGuid().ToString() + Path.GetExtension(actualizarPeliculaDto.Imagen.FileName);
-                string rutaArchivo = @"wwwroot\\ImagenesPeliculas\" + nombreArchivo;
-
-                //Para obtener directorio en donde se guardaran las imágenes
-                var ubicacionDirectorio = Path.Combine(Directory.GetCurrentDirectory(), rutaArchivo);
-
-                FileInfo file = new FileInfo(ubicacionDirectorio);
-
-                //Recordar buscar la manera de cuando actualicen la película se elimine la imágen anterior
-                //que hace referencia al id de la película según su primer número que tiene en el nombre de la misma
-                if (System.IO.File.Exists(ubicacionDirectorio))
+                for (int i = 0; i < actualizarPeliculaDto.Imagenes.Count; i++)
                 {
-                    System.IO.File.Delete(ubicacionDirectorio);
+                    var imagen = actualizarPeliculaDto.Imagenes[i];
+
+                    // Comprobar si el archivo es distinto al que ya está almacenado
+                    string nombreArchivoNuevo = peliculaExistente.Id + System.Guid.NewGuid().ToString() + Path.GetExtension(imagen.FileName);
+                    //Optiene el archivo que está supuesto a existir en la BD, si existe dicho archivo en dicha posición accede a el, de lo contrario envía una cadena vacía
+                    string nombreArchivoExistente = Path.GetFileName(peliculaExistente.RutasLocalesImagenes.Count > i ? peliculaExistente.RutasLocalesImagenes[i] : "");
+
+                    // Si el nombre del archivo es diferente, o no hay archivo en esa posición, entonces se actualiza
+                    if (nombreArchivoExistente != imagen.FileName)
+                    {
+                        string rutaArchivo = @"wwwroot\\ImagenesPeliculas\" + nombreArchivoNuevo;
+                        var ubicacionDirectorio = Path.Combine(Directory.GetCurrentDirectory(), rutaArchivo);
+
+                        // Eliminar la imagen antigua en esa posición si existe
+                        if (peliculaExistente.RutasLocalesImagenes.Count > i && System.IO.File.Exists(peliculaExistente.RutasLocalesImagenes[i]))
+                        {
+                            System.IO.File.Delete(peliculaExistente.RutasLocalesImagenes[i]);
+                        }
+
+                        // Guardar la nueva imagen
+                        using (var fileStream = new FileStream(ubicacionDirectorio, FileMode.Create))
+                        {
+                            imagen.CopyTo(fileStream);
+                        }
+
+                        // Construir la URL base del sitio web actual
+                        var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}{HttpContext.Request.PathBase.Value}";
+
+                        // Actualizar las listas con las rutas de las nuevas imágenes
+                        if (peliculaExistente.RutasImagenes.Count > i)
+                        {
+                            peliculaExistente.RutasImagenes[i] = baseUrl + "/ImagenesPeliculas/" + nombreArchivoNuevo;
+                            peliculaExistente.RutasLocalesImagenes[i] = rutaArchivo;
+                        }
+                        else
+                        {
+                            peliculaExistente.RutasImagenes.Add(baseUrl + "/ImagenesPeliculas/" + nombreArchivoNuevo);
+                            peliculaExistente.RutasLocalesImagenes.Add(rutaArchivo);
+                        }
+                    }
                 }
-
-                using (var fileStream = new FileStream(ubicacionDirectorio, FileMode.Create))
-                {
-                    actualizarPeliculaDto.Imagen.CopyTo(fileStream);
-                }
-
-                //construir la URL base del sitio web actual en una aplicación ASP.NET Core.
-                var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}{HttpContext.Request.PathBase.Value}";
-
-                pelicula.RutaImagen = baseUrl + "/ImagenesPeliculas/" + nombreArchivo;
-                pelicula.RutaLocalImagen = rutaArchivo;
             }
             else
             {
-                pelicula.RutaImagen = "https://placeholder.co/600x400";
+                return BadRequest("Has sobrepasado el límite de imágenes o no se han proporcionado imágenes.");
             }
 
-            _pelRepo.ActualizarPelicula(pelicula);
+            _pelRepo.ActualizarPelicula(peliculaExistente);
 
             return NoContent();
         }
+
 
         [HttpDelete("{peliculaId:int}", Name = "BorrarPelicula")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -317,6 +339,17 @@ namespace ApiPeliculas.Controllers.V1
 
             }
             var pelicula = _pelRepo.GetPelicula(peliculaId);
+
+            if (pelicula.RutasLocalesImagenes != null && pelicula.RutasLocalesImagenes.Count > 0)
+            {
+                foreach (var rutaLocalImagen in pelicula.RutasLocalesImagenes)
+                {
+                    if (System.IO.File.Exists(rutaLocalImagen))
+                    {
+                        System.IO.File.Delete(rutaLocalImagen);
+                    }
+                }
+            }
 
             if (!_pelRepo.BorrarPelicula(pelicula))
             {

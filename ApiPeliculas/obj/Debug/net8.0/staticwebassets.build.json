@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "wrwHssw4sgAkivzGCdJqwZ1+TavaUDikupVLf3M+m4w=",
+  "Hash": "zlUMUegriWM9xzNB7EW48Jr0c4lB7dHl9xB902APYKo=",
   "Source": "ApiPeliculas",
   "BasePath": "_content/ApiPeliculas",
   "Mode": "Default",
@@ -10,19 +10,19 @@
     {
       "Name": "ApiPeliculas\\wwwroot",
       "Source": "ApiPeliculas",
-      "ContentRoot": "D:\\C#\\ASP.NET\\API\\ApiPeliculas\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\frany\\source\\repos\\API_Curso\\ApiPeliculas\\wwwroot\\",
       "BasePath": "_content/ApiPeliculas",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "D:\\C#\\ASP.NET\\API\\ApiPeliculas\\wwwroot\\ImagenesPeliculas\\00e227067-642a-42e3-afcf-6c17b6594d32.jpg",
+      "Identity": "C:\\Users\\frany\\source\\repos\\API_Curso\\ApiPeliculas\\wwwroot\\ImagenesPeliculas\\57e805122-6d61-4efd-a612-6e873d7db2f3.jpg",
       "SourceId": "ApiPeliculas",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\C#\\ASP.NET\\API\\ApiPeliculas\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\frany\\source\\repos\\API_Curso\\ApiPeliculas\\wwwroot\\",
       "BasePath": "_content/ApiPeliculas",
-      "RelativePath": "ImagenesPeliculas/00e227067-642a-42e3-afcf-6c17b6594d32.jpg",
+      "RelativePath": "ImagenesPeliculas/57e805122-6d61-4efd-a612-6e873d7db2f3.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -33,15 +33,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\ImagenesPeliculas\\00e227067-642a-42e3-afcf-6c17b6594d32.jpg"
+      "OriginalItemSpec": "wwwroot\\ImagenesPeliculas\\57e805122-6d61-4efd-a612-6e873d7db2f3.jpg"
     },
     {
-      "Identity": "D:\\C#\\ASP.NET\\API\\ApiPeliculas\\wwwroot\\ImagenesPeliculas\\0dd520741-62d8-4db7-84f9-75ada115f9df.jpg",
+      "Identity": "C:\\Users\\frany\\source\\repos\\API_Curso\\ApiPeliculas\\wwwroot\\ImagenesPeliculas\\5c152b021-6e19-4ebc-be2e-f2dd6bf55077.jpg",
       "SourceId": "ApiPeliculas",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\C#\\ASP.NET\\API\\ApiPeliculas\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\frany\\source\\repos\\API_Curso\\ApiPeliculas\\wwwroot\\",
       "BasePath": "_content/ApiPeliculas",
-      "RelativePath": "ImagenesPeliculas/0dd520741-62d8-4db7-84f9-75ada115f9df.jpg",
+      "RelativePath": "ImagenesPeliculas/5c152b021-6e19-4ebc-be2e-f2dd6bf55077.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -52,15 +52,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\ImagenesPeliculas\\0dd520741-62d8-4db7-84f9-75ada115f9df.jpg"
+      "OriginalItemSpec": "wwwroot\\ImagenesPeliculas\\5c152b021-6e19-4ebc-be2e-f2dd6bf55077.jpg"
     },
     {
-      "Identity": "D:\\C#\\ASP.NET\\API\\ApiPeliculas\\wwwroot\\ImagenesPeliculas\\8825cfd61-ae83-4f9d-bb44-fa1ea6fd0385.jpg",
+      "Identity": "C:\\Users\\frany\\source\\repos\\API_Curso\\ApiPeliculas\\wwwroot\\ImagenesPeliculas\\5e4eecdfa-425f-4222-96a4-1aa4c7d0b247.jpg",
       "SourceId": "ApiPeliculas",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\C#\\ASP.NET\\API\\ApiPeliculas\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\frany\\source\\repos\\API_Curso\\ApiPeliculas\\wwwroot\\",
       "BasePath": "_content/ApiPeliculas",
-      "RelativePath": "ImagenesPeliculas/8825cfd61-ae83-4f9d-bb44-fa1ea6fd0385.jpg",
+      "RelativePath": "ImagenesPeliculas/5e4eecdfa-425f-4222-96a4-1aa4c7d0b247.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -71,26 +71,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\ImagenesPeliculas\\8825cfd61-ae83-4f9d-bb44-fa1ea6fd0385.jpg"
-    },
-    {
-      "Identity": "D:\\C#\\ASP.NET\\API\\ApiPeliculas\\wwwroot\\ImagenesPeliculas\\8e7764739-f52d-4ecb-9093-3792e916287e.jpg",
-      "SourceId": "ApiPeliculas",
-      "SourceType": "Discovered",
-      "ContentRoot": "D:\\C#\\ASP.NET\\API\\ApiPeliculas\\wwwroot\\",
-      "BasePath": "_content/ApiPeliculas",
-      "RelativePath": "ImagenesPeliculas/8e7764739-f52d-4ecb-9093-3792e916287e.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\ImagenesPeliculas\\8e7764739-f52d-4ecb-9093-3792e916287e.jpg"
+      "OriginalItemSpec": "wwwroot\\ImagenesPeliculas\\5e4eecdfa-425f-4222-96a4-1aa4c7d0b247.jpg"
     }
   ]
 }
